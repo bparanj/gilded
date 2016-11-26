@@ -21,49 +21,46 @@ class GildedRose
     @items << Item.new("Conjured Mana Cake", 3, 6)
   end
 
-  # Backstage passes, like aged brie, increases in Quality as it's SellIn
-  #     value approaches; Quality increases by 2 when there are 10 days or less
-  #     and by 3 when there are 5 days or less but Quality drops to 0 after the
-  #     concert
   def update_quality
-    for i in 0..(@items.size-1)
-      if (@items[i].name != AGED_BRIE && @items[i].name != BACKSTAGE_PASSES)
+    @items.each do |item|
+      if (item.name != AGED_BRIE && item.name != BACKSTAGE_PASSES)
         # "Sulfuras", being a legendary item, never decreases in Quality
-        if (@items[i].name != SULFURAS)
-          decrement_quality_of(@items[i])
+        if (item.name != SULFURAS)
+          decrement_quality_of(item)
         end
       else
-        # The Quality of an item is never more than 50
-        if (@items[i].quality < 50)
-          @items[i].quality += 1
-          if (@items[i].name == BACKSTAGE_PASSES)
-            if (@items[i].sell_in < ELEVEN_DAYS)
-              increment_quality_of(@items[i])
-            end
-            if (@items[i].sell_in < SIX_DAYS)
-              increment_quality_of(@items[i])
-            end
+        increment_quality_of(item)
+        # Backstage passes, like aged brie, increases in Quality as it's SellIn
+        #     value approaches; Quality increases by 2 when there are 10 days or less
+        #     and by 3 when there are 5 days or less but Quality drops to 0 after the
+        #     concert
+        if (item.name == BACKSTAGE_PASSES)
+          if (item.sell_in < ELEVEN_DAYS)
+            increment_quality_of(item)
+          end
+          if (item.sell_in < SIX_DAYS)
+            increment_quality_of(item)
           end
         end
       end
       # "Sulfuras", being a legendary item, never has to be sold 
-      if (@items[i].name != SULFURAS)
-        @items[i].sell_in -= 1;
+      if (item.name != SULFURAS)
+        item.sell_in -= 1;
       end
-      if expired?(@items[i])
+      if expired?(item)
         # "Aged Brie" actually increases in Quality the older it gets
-        if (@items[i].name != AGED_BRIE)
-          if (@items[i].name != BACKSTAGE_PASSES)
+        if (item.name != AGED_BRIE)
+          if (item.name != BACKSTAGE_PASSES)
             # "Sulfuras", being a legendary item, never decreases in Quality
-            if (@items[i].name != SULFURAS)
-              decrement_quality_of(@items[i])
+            if (item.name != SULFURAS)
+              decrement_quality_of(item)
             end
           else
             # Once the sell by date has passed, Quality degrades twice as fast
-            degrade_quality_twice_for(@items[i])
+            degrade_quality_twice_for(item)
           end
         else
-          increment_quality_of(@items[i])
+          increment_quality_of(item)
         end
       end
     end
