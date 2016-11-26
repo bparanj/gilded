@@ -26,35 +26,35 @@ class GildedRose
       if (@items[i].name != AGED_BRIE && @items[i].name != BACKSTAGE_PASSES)
         if (@items[i].quality > 0)
           if (@items[i].name != SULFURAS)
-            @items[i].quality = @items[i].quality - 1
+            @items[i].quality -= 1
           end
         end
       else
         if (@items[i].quality < 50)
-          @items[i].quality = @items[i].quality + 1
+          @items[i].quality += 1
           if (@items[i].name == BACKSTAGE_PASSES)
             if (@items[i].sell_in < ELEVEN_DAYS)
               if (@items[i].quality < 50)
-                @items[i].quality = @items[i].quality + 1
+                @items[i].quality += 1
               end
             end
             if (@items[i].sell_in < SIX_DAYS)
               if (@items[i].quality < 50)
-                @items[i].quality = @items[i].quality + 1
+                @items[i].quality += 1
               end
             end
           end
         end
       end
       if (@items[i].name != SULFURAS)
-        @items[i].sell_in = @items[i].sell_in - 1;
+        @items[i].sell_in -= 1;
       end
       if (@items[i].sell_in < ZERO_DAYS)
         if (@items[i].name != AGED_BRIE)
           if (@items[i].name != BACKSTAGE_PASSES)
             if (@items[i].quality > 0)
               if (@items[i].name != SULFURAS)
-                @items[i].quality = @items[i].quality - 1
+                @items[i].quality -= 1
               end
             end
           else
@@ -62,7 +62,7 @@ class GildedRose
           end
         else
           if (@items[i].quality < 50)
-            @items[i].quality = @items[i].quality + 1
+            @items[i].quality += 1
           end
         end
       end
