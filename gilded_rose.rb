@@ -51,7 +51,7 @@ class GildedRose
       item.quality -= 1
     end
     
-    if item.sell_in < 0
+    if expired?(item)
       if item.name == "Aged Brie"
         increment_quality_of(item)
       elsif item.name == "Backstage passes to a TAFKAL80ETC concert"
@@ -85,7 +85,6 @@ class GildedRose
   end
   
   def expired?(item)
-    decrement_sell_in_days_for(item)
     item.sell_in < ZERO_DAYS
   end
   
