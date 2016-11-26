@@ -32,20 +32,25 @@ class GildedRose
   private
   
   def update(item)
+    update_days_to_expire_for(item)
+    update_quality_for(item)
+  end
+
+  def update_quality_for(item)
     if (item.name == AGED_BRIE || item.name == BACKSTAGE_PASSES)
       increment_quality_of(item)
       if item.name == BACKSTAGE_PASSES
-        if item.sell_in < 11
+        if item.sell_in < 10
           increment_quality_of(item)
         end
-        if item.sell_in < 6
+        if item.sell_in < 5
           increment_quality_of(item)
         end
       end
     elsif item.quality > 0
       item.quality -= 1
     end
-    item.sell_in -= 1
+    
     if item.sell_in < 0
       if item.name != "Aged Brie"
         if item.name != "Backstage passes to a TAFKAL80ETC concert"
@@ -112,5 +117,9 @@ class GildedRose
       # Once the sell by date has passed, Quality degrades twice as fast
       degrade_quality_twice_for(item)
     end          
+  end
+  
+  def update_days_to_expire_for(item)
+    item.sell_in -= 1
   end
 end
