@@ -56,8 +56,7 @@ class GildedRose
       if (@items[i].name != SULFURAS)
         @items[i].sell_in -= 1;
       end
-      # Expired item
-      if (@items[i].sell_in < ZERO_DAYS)
+      if expired?(@items[i])
         # "Aged Brie" actually increases in Quality the older it gets
         if (@items[i].name != AGED_BRIE)
           if (@items[i].name != BACKSTAGE_PASSES)
@@ -91,5 +90,9 @@ class GildedRose
   # Seems like a bug. We will leave it alone.
   def degrade_quality_twice_for(item)
     item.quality = item.quality - item.quality
+  end
+  
+  def expired?(item)
+    item.sell_in < ZERO_DAYS
   end
 end
