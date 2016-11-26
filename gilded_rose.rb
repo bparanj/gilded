@@ -52,9 +52,9 @@ class GildedRose
     end
     
     if expired?(item)
-      if item.name == "Aged Brie"
+      if item.name == AGED_BRIE
         increment_quality_of(item)
-      elsif item.name == "Backstage passes to a TAFKAL80ETC concert"
+      elsif item.name == BACKSTAGE_PASSES
         item.quality = item.quality - item.quality
       else
         decrement_quality_of(item)
