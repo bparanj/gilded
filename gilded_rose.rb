@@ -43,20 +43,7 @@ class GildedRose
         decrement_sell_in_days_for(item)
       end
       if expired?(item)
-        # Aged Brie actually increases in Quality the older it gets
-        if item.name == AGED_BRIE
-          increment_quality_of(item)
-        else
-          if item.name != BACKSTAGE_PASSES
-            # "Sulfuras", being a legendary item, never decreases in Quality
-            if (item.name != SULFURAS)
-              decrement_quality_of(item)
-            end
-          else
-            # Once the sell by date has passed, Quality degrades twice as fast
-            degrade_quality_twice_for(item)
-          end          
-        end
+        handle_expired(item)
       end
     end
   end
@@ -90,11 +77,28 @@ class GildedRose
   end
   
   def update_quality_for_backstage_passes(item)
-    if (item.sell_in < ELEVEN_DAYS)
+    if item.sell_in < ELEVEN_DAYS
       increment_quality_of(item)
     end
-    if (item.sell_in < SIX_DAYS)
+    if item.sell_in < SIX_DAYS
       increment_quality_of(item)
+    end
+  end
+  
+  def handle_expired(item)
+    # Aged Brie actually increases in Quality the older it gets
+    if item.name == AGED_BRIE
+      increment_quality_of(item)
+    else
+      if item.name != BACKSTAGE_PASSES
+        # "Sulfuras", being a legendary item, never decreases in Quality
+        if item.name != SULFURAS
+          decrement_quality_of(item)
+        end
+      else
+        # Once the sell by date has passed, Quality degrades twice as fast
+        degrade_quality_twice_for(item)
+      end          
     end
   end
 end
