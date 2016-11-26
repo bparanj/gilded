@@ -39,20 +39,18 @@ class GildedRose
   def update_quality_for(item)
     if item.name == AGED_BRIE
       increment_quality_of(item)
+      increment_quality_of(item) if expired?(item)  
     elsif item.name == BACKSTAGE_PASSES
       update_quality_for_backstage_passes(item)
+      if expired?(item)
+        item.quality = item.quality - item.quality
+      end
     else 
       decrement_quality_of(item)
-    end
-    
-    if expired?(item)
-      if item.name == AGED_BRIE
-        increment_quality_of(item)
-      elsif item.name == BACKSTAGE_PASSES
-        item.quality = item.quality - item.quality
-      else
+      # Once the sell by date has passed, Quality degrades twice as fast
+      if expired?(item)
         decrement_quality_of(item)
-      end
+      end      
     end
   end
   
@@ -73,10 +71,6 @@ class GildedRose
       item.quality += 1
     end
   end
-  # Seems like a bug. We will leave it alone.
-  def degrade_quality_twice_for(item)
-    item.quality = item.quality - item.quality
-  end
   
   def expired?(item)
     item.sell_in < ZERO_DAYS
@@ -95,19 +89,7 @@ class GildedRose
       increment_quality_of(item)
     end    
   end
-  
-  def handle_expired(item)
-    # Aged Brie actually increases in Quality the older it gets
-    if item.name == AGED_BRIE
-      increment_quality_of(item)
-    elsif item.name != BACKSTAGE_PASSES
-      decrement_quality_of(item)
-    else
-      # Once the sell by date has passed, Quality degrades twice as fast
-      degrade_quality_twice_for(item)
-    end          
-  end
-  
+    
   def update_days_to_expire_for(item)
     item.sell_in -= 1
   end
