@@ -69,7 +69,7 @@ class GildedRose
             end
           else
             # Once the sell by date has passed, Quality degrades twice as fast
-            @items[i].quality = @items[i].quality - @items[i].quality
+            degrade_quality_twice_for(@items[i])
           end
         else
           # The Quality of an item is never more than 50
@@ -87,5 +87,9 @@ class GildedRose
   
   def increment_quality_of(item)
     item.quality += 1
+  end
+  # Seems like a bug. We will leave it alone.
+  def degrade_quality_twice_for(item)
+    item.quality = item.quality - item.quality
   end
 end
