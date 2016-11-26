@@ -25,32 +25,27 @@ class GildedRose
     @items.each do |item|
       if (item.name != AGED_BRIE && item.name != BACKSTAGE_PASSES)
         # "Sulfuras", being a legendary item, never decreases in Quality
-        if (item.name != SULFURAS)
+        if item.name != SULFURAS
           decrement_quality_of(item)
         end
       else
         increment_quality_of(item)
-        # Backstage passes, like aged brie, increases in Quality as it's SellIn
-        #     value approaches; Quality increases by 2 when there are 10 days or less
-        #     and by 3 when there are 5 days or less but Quality drops to 0 after the
-        #     concert
-        if (item.name == BACKSTAGE_PASSES)
-          if (item.sell_in < ELEVEN_DAYS)
-            increment_quality_of(item)
-          end
-          if (item.sell_in < SIX_DAYS)
-            increment_quality_of(item)
-          end
+        # Backstage passes increases in Quality as it's SellIn
+        # value approaches; Quality increases by 2 when there are 10 days or less
+        # and by 3 when there are 5 days or less but Quality drops to 0 after the
+        # concert
+        if item.name == BACKSTAGE_PASSES
+          update_quality_for_backstage_passes(item)
         end
       end
       # "Sulfuras", being a legendary item, never has to be sold 
-      if (item.name != SULFURAS)
-        item.sell_in -= 1;
+      if item.name != SULFURAS
+        decrement_sell_in_days_for(item)
       end
       if expired?(item)
         # "Aged Brie" actually increases in Quality the older it gets
-        if (item.name != AGED_BRIE)
-          if (item.name != BACKSTAGE_PASSES)
+        if item.name != AGED_BRIE
+          if item.name != BACKSTAGE_PASSES
             # "Sulfuras", being a legendary item, never decreases in Quality
             if (item.name != SULFURAS)
               decrement_quality_of(item)
@@ -64,6 +59,12 @@ class GildedRose
         end
       end
     end
+  end
+  
+  private
+  
+  def decrement_sell_in_days_for(item)
+    item.sell_in -= 1
   end
   
   def decrement_quality_of(item)
@@ -86,5 +87,14 @@ class GildedRose
   
   def expired?(item)
     item.sell_in < ZERO_DAYS
+  end
+  
+  def update_quality_for_backstage_passes(item)
+    if (item.sell_in < ELEVEN_DAYS)
+      increment_quality_of(item)
+    end
+    if (item.sell_in < SIX_DAYS)
+      increment_quality_of(item)
+    end
   end
 end
