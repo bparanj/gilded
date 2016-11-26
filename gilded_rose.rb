@@ -52,19 +52,22 @@ class GildedRose
     end
     
     if item.sell_in < 0
-      if item.name != "Aged Brie"
+      if item.name == "Aged Brie"
+        increment_quality_of(item)
+      else
         if item.name != "Backstage passes to a TAFKAL80ETC concert"
           if item.quality > 0
             item.quality -= 1
           end
         else
           item.quality = item.quality - item.quality
-        end
-      else
-        increment_quality_of(item)
+        end        
       end
     end
   end
+
+
+
   
   def decrement_sell_in_days_for(item)
     item.sell_in -= 1
