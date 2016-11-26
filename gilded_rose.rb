@@ -25,21 +25,25 @@ class GildedRose
     @items.each do |item|
       # "Sulfuras", being a legendary item, never has to be sold and never decreases in Quality
       next if item.name == SULFURAS
-
-      if (item.name != AGED_BRIE && item.name != BACKSTAGE_PASSES)
-        decrement_quality_of(item)
-      elsif item.name == BACKSTAGE_PASSES
-        update_quality_for_backstage_passes(item)
-      else
-        increment_quality_of(item)        
-      end
-      if expired?(item)
-        handle_expired(item)
-      end        
+      
+      update(item)
     end
   end
   
   private
+  
+  def update(item)
+    if (item.name != AGED_BRIE && item.name != BACKSTAGE_PASSES)
+      decrement_quality_of(item)
+    elsif item.name == BACKSTAGE_PASSES
+      update_quality_for_backstage_passes(item)
+    else
+      increment_quality_of(item)        
+    end
+    if expired?(item)
+      handle_expired(item)
+    end        
+  end
   
   def decrement_sell_in_days_for(item)
     item.sell_in -= 1
