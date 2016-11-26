@@ -43,12 +43,13 @@ class GildedRose
     elsif item.name == BACKSTAGE_PASSES
       update_quality_for_backstage_passes(item)
       if expired?(item)
-        item.quality = item.quality - item.quality
+        item.quality -= item.quality
       end
     else 
+      # Other items like Elixir and Dexterity
       decrement_quality_of(item)
-      # Once the sell by date has passed, Quality degrades twice as fast
       if expired?(item)
+        # Once the sell by date has passed, Quality degrades twice as fast
         decrement_quality_of(item)
       end      
     end
