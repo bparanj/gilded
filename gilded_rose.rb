@@ -38,14 +38,10 @@ class GildedRose
           @items[i].quality += 1
           if (@items[i].name == BACKSTAGE_PASSES)
             if (@items[i].sell_in < ELEVEN_DAYS)
-              if (@items[i].quality < 50)
-                increment_quality_of(@items[i])
-              end
+              increment_quality_of(@items[i])
             end
             if (@items[i].sell_in < SIX_DAYS)
-              if (@items[i].quality < 50)
-                increment_quality_of(@items[i])
-              end
+              increment_quality_of(@items[i])
             end
           end
         end
@@ -67,10 +63,7 @@ class GildedRose
             degrade_quality_twice_for(@items[i])
           end
         else
-          # The Quality of an item is never more than 50
-          if (@items[i].quality < 50)
-            increment_quality_of(@items[i])
-          end
+          increment_quality_of(@items[i])
         end
       end
     end
@@ -84,7 +77,10 @@ class GildedRose
   end
   
   def increment_quality_of(item)
-    item.quality += 1
+    # The Quality of an item is never more than 50
+    if item.quality < 50
+      item.quality += 1
+    end
   end
   # Seems like a bug. We will leave it alone.
   def degrade_quality_twice_for(item)
