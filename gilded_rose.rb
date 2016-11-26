@@ -5,8 +5,8 @@ class GildedRose
   SULFURAS = 'Sulfuras, Hand of Ragnaros'
   AGED_BRIE = 'Aged Brie'
   
-  ELEVEN_DAYS = 11
-  SIX_DAYS = 6
+  TEN_DAYS = 10
+  FIVE_DAYS = 5
   ZERO_DAYS = 0
   
   @items = []
@@ -40,13 +40,7 @@ class GildedRose
     if item.name == AGED_BRIE
       increment_quality_of(item)
     elsif item.name == BACKSTAGE_PASSES
-      increment_quality_of(item)
-      if item.sell_in < 10
-        increment_quality_of(item)
-      end
-      if item.sell_in < 5
-        increment_quality_of(item)
-      end
+      update_quality_for_backstage_passes(item)
     else 
       decrement_quality_of(item)
     end
@@ -94,12 +88,12 @@ class GildedRose
   # concert
   def update_quality_for_backstage_passes(item)
     increment_quality_of(item)
-    if item.sell_in < ELEVEN_DAYS
+    if item.sell_in < TEN_DAYS
       increment_quality_of(item)
     end
-    if item.sell_in < SIX_DAYS
+    if item.sell_in < FIVE_DAYS
       increment_quality_of(item)
-    end
+    end    
   end
   
   def handle_expired(item)
