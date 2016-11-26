@@ -28,11 +28,9 @@ class GildedRose
   def update_quality
     for i in 0..(@items.size-1)
       if (@items[i].name != AGED_BRIE && @items[i].name != BACKSTAGE_PASSES)
-        if (@items[i].quality > 0)
-          # "Sulfuras", being a legendary item, never decreases in Quality
-          if (@items[i].name != SULFURAS)
-            decrement_quality_of(@items[i])
-          end
+        # "Sulfuras", being a legendary item, never decreases in Quality
+        if (@items[i].name != SULFURAS)
+          decrement_quality_of(@items[i])
         end
       else
         # The Quality of an item is never more than 50
@@ -60,11 +58,9 @@ class GildedRose
         # "Aged Brie" actually increases in Quality the older it gets
         if (@items[i].name != AGED_BRIE)
           if (@items[i].name != BACKSTAGE_PASSES)
-            if (@items[i].quality > 0)
-              # "Sulfuras", being a legendary item, never decreases in Quality
-              if (@items[i].name != SULFURAS)
-                decrement_quality_of(@items[i])
-              end
+            # "Sulfuras", being a legendary item, never decreases in Quality
+            if (@items[i].name != SULFURAS)
+              decrement_quality_of(@items[i])
             end
           else
             # Once the sell by date has passed, Quality degrades twice as fast
@@ -81,7 +77,10 @@ class GildedRose
   end
   
   def decrement_quality_of(item)
-    item.quality -= 1
+    # The Quality of an item is never negative
+    if item.quality > 0
+      item.quality -= 1
+    end
   end
   
   def increment_quality_of(item)
