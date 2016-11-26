@@ -86,8 +86,7 @@ class GildedRose
     # Aged Brie actually increases in Quality the older it gets
     if item.name == AGED_BRIE
       increment_quality_of(item)
-    elsif (item.name != BACKSTAGE_PASSES && item.name != SULFURAS)
-      # "Sulfuras", being a legendary item, never decreases in Quality
+    elsif item.name != BACKSTAGE_PASSES
       decrement_quality_of(item)
     else
       # Once the sell by date has passed, Quality degrades twice as fast
