@@ -41,12 +41,12 @@ class GildedRose
           if (@items[i].name == BACKSTAGE_PASSES)
             if (@items[i].sell_in < ELEVEN_DAYS)
               if (@items[i].quality < 50)
-                @items[i].quality += 1
+                increment_quality_of(@items[i])
               end
             end
             if (@items[i].sell_in < SIX_DAYS)
               if (@items[i].quality < 50)
-                @items[i].quality += 1
+                increment_quality_of(@items[i])
               end
             end
           end
@@ -74,7 +74,7 @@ class GildedRose
         else
           # The Quality of an item is never more than 50
           if (@items[i].quality < 50)
-            @items[i].quality += 1
+            increment_quality_of(@items[i])
           end
         end
       end
@@ -83,5 +83,9 @@ class GildedRose
   
   def decrement_quality_of(item)
     item.quality -= 1
+  end
+  
+  def increment_quality_of(item)
+    item.quality += 1
   end
 end
