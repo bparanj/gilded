@@ -5,6 +5,10 @@ class GildedRose
   SULFURAS = 'Sulfuras, Hand of Ragnaros'
   AGED_BRIE = 'Aged Brie'
   
+  ELEVEN_DAYS = 11
+  SIX_DAYS = 6
+  ZERO_DAYS = 0
+  
   @items = []
   
   def initialize
@@ -29,12 +33,12 @@ class GildedRose
         if (@items[i].quality < 50)
           @items[i].quality = @items[i].quality + 1
           if (@items[i].name == BACKSTAGE_PASSES)
-            if (@items[i].sell_in < 11)
+            if (@items[i].sell_in < ELEVEN_DAYS)
               if (@items[i].quality < 50)
                 @items[i].quality = @items[i].quality + 1
               end
             end
-            if (@items[i].sell_in < 6)
+            if (@items[i].sell_in < SIX_DAYS)
               if (@items[i].quality < 50)
                 @items[i].quality = @items[i].quality + 1
               end
@@ -45,7 +49,7 @@ class GildedRose
       if (@items[i].name != SULFURAS)
         @items[i].sell_in = @items[i].sell_in - 1;
       end
-      if (@items[i].sell_in < 0)
+      if (@items[i].sell_in < ZERO_DAYS)
         if (@items[i].name != AGED_BRIE)
           if (@items[i].name != BACKSTAGE_PASSES)
             if (@items[i].quality > 0)
