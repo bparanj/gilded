@@ -37,15 +37,15 @@ class GildedRose
   end
 
   def update_quality_for(item)
-    if (item.name == AGED_BRIE || item.name == BACKSTAGE_PASSES)
+    if item.name == AGED_BRIE
       increment_quality_of(item)
-      if item.name == BACKSTAGE_PASSES
-        if item.sell_in < 10
-          increment_quality_of(item)
-        end
-        if item.sell_in < 5
-          increment_quality_of(item)
-        end
+    elsif item.name == BACKSTAGE_PASSES
+      increment_quality_of(item)
+      if item.sell_in < 10
+        increment_quality_of(item)
+      end
+      if item.sell_in < 5
+        increment_quality_of(item)
       end
     elsif item.quality > 0
       item.quality -= 1
