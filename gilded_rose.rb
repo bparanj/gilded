@@ -28,15 +28,10 @@ class GildedRose
       
       if (item.name != AGED_BRIE && item.name != BACKSTAGE_PASSES)
         decrement_quality_of(item)
+      elsif item.name == BACKSTAGE_PASSES
+        update_quality_for_backstage_passes(item)
       else
-        increment_quality_of(item)
-        # Backstage passes increases in Quality as it's SellIn
-        # value approaches; Quality increases by 2 when there are 10 days or less
-        # and by 3 when there are 5 days or less but Quality drops to 0 after the
-        # concert
-        if item.name == BACKSTAGE_PASSES
-          update_quality_for_backstage_passes(item)
-        end
+        increment_quality_of(item)        
       end
       decrement_sell_in_days_for(item)
       if expired?(item)
@@ -73,7 +68,12 @@ class GildedRose
     item.sell_in < ZERO_DAYS
   end
   
+  # Backstage passes increases in Quality as it's SellIn
+  # value approaches; Quality increases by 2 when there are 10 days or less
+  # and by 3 when there are 5 days or less but Quality drops to 0 after the
+  # concert
   def update_quality_for_backstage_passes(item)
+    increment_quality_of(item)
     if item.sell_in < ELEVEN_DAYS
       increment_quality_of(item)
     end
