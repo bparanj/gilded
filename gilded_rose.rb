@@ -25,7 +25,6 @@ class GildedRose
     @items.each do |item|
       # "Sulfuras", being a legendary item, never has to be sold and never decreases in Quality
       next if item.name == SULFURAS
-      
       update(item)
     end
   end
@@ -33,16 +32,44 @@ class GildedRose
   private
   
   def update(item)
-    if (item.name != AGED_BRIE && item.name != BACKSTAGE_PASSES)
-      decrement_quality_of(item)
-    elsif item.name == BACKSTAGE_PASSES
-      update_quality_for_backstage_passes(item)
+    if (item.name != "Aged Brie" && item.name != "Backstage passes to a TAFKAL80ETC concert")
+      if (item.quality > 0)
+          item.quality = item.quality - 1
+      end
     else
-      increment_quality_of(item)        
+      if (item.quality < 50)
+        item.quality = item.quality + 1
+        if (item.name == "Backstage passes to a TAFKAL80ETC concert")
+          if (item.sell_in < 11)
+            if (item.quality < 50)
+              item.quality = item.quality + 1
+            end
+          end
+          if (item.sell_in < 6)
+            if (item.quality < 50)
+              item.quality = item.quality + 1
+            end
+          end
+        end
+      end
     end
-    if expired?(item)
-      handle_expired(item)
-    end        
+    item.sell_in = item.sell_in - 1;
+    if (item.sell_in < 0)
+      if (item.name != "Aged Brie")
+        if (item.name != "Backstage passes to a TAFKAL80ETC concert")
+          if (item.quality > 0)
+              item.quality = item.quality - 1
+          end
+        else
+          item.quality = item.quality - item.quality
+        end
+      else
+        if (item.quality < 50)
+          item.quality = item.quality + 1
+        end
+      end
+    end
+  
   end
   
   def decrement_sell_in_days_for(item)
