@@ -60,8 +60,8 @@ class GildedRose
         else
           item.quality = item.quality - item.quality
         end
-      elsif item.quality < 50
-        item.quality += 1
+      else
+        increment_quality_of(item)
       end
     end
   end
