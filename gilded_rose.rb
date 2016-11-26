@@ -23,27 +23,25 @@ class GildedRose
 
   def update_quality
     @items.each do |item|
-      if item.name == SULFURAS
-        # "Sulfuras", being a legendary item, never has to be sold 
-        # "Sulfuras", being a legendary item, never decreases in Quality
+      # "Sulfuras", being a legendary item, never has to be sold and never decreases in Quality
+      next if item.name == SULFURAS
+      
+      if (item.name != AGED_BRIE && item.name != BACKSTAGE_PASSES)
+        decrement_quality_of(item)
       else
-        if (item.name != AGED_BRIE && item.name != BACKSTAGE_PASSES)
-          decrement_quality_of(item)
-        else
-          increment_quality_of(item)
-          # Backstage passes increases in Quality as it's SellIn
-          # value approaches; Quality increases by 2 when there are 10 days or less
-          # and by 3 when there are 5 days or less but Quality drops to 0 after the
-          # concert
-          if item.name == BACKSTAGE_PASSES
-            update_quality_for_backstage_passes(item)
-          end
+        increment_quality_of(item)
+        # Backstage passes increases in Quality as it's SellIn
+        # value approaches; Quality increases by 2 when there are 10 days or less
+        # and by 3 when there are 5 days or less but Quality drops to 0 after the
+        # concert
+        if item.name == BACKSTAGE_PASSES
+          update_quality_for_backstage_passes(item)
         end
-        decrement_sell_in_days_for(item)
-        if expired?(item)
-          handle_expired(item)
-        end        
       end
+      decrement_sell_in_days_for(item)
+      if expired?(item)
+        handle_expired(item)
+      end        
     end
   end
   
